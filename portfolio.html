@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תיק השקעות — אסטרטגיית צמיחה ל-3 חודשים</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Assistant:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --bg:       #0a0a0a;
+  --orange:   #FF6B00;
+  --red:      #C8001E;
+  --amber:    #FF9A3C;
+  --ivory:    #F5F0E8;
+  --green:    #00C896;
+  --blue:     #0080FF;
+  --purple:   #8B5CF6;
+  --gold:     #FFD700;
+  --grid-c:   rgba(255,107,0,.06);
+  --f-head:   'Bebas Neue', sans-serif;
+  --f-body:   'Space Mono', monospace;
+  --f-heb:    'Assistant', sans-serif;
+  --trans:    200ms ease;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ivory);
+  font-family: var(--f-heb);
+  min-height: 100vh;
+  overflow-x: hidden;
+  direction: rtl;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--grid-c) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-c) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 80% at center, transparent 55%, rgba(0,0,0,.8) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.scanlines {
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 3px,
+    rgba(0,0,0,.08) 3px, rgba(0,0,0,.08) 4px
+  );
+  pointer-events: none;
+  z-index: 999;
+  animation: scanMove 12s linear infinite;
+}
+@keyframes scanMove {
+  from { background-position: 0 0; }
+  to   { background-position: 0 80px; }
+}
+
+.divider {
+  position: relative;
+  z-index: 1;
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,107,0,.2), transparent);
+  margin: 0;
+}
+
+/* ── HERO ─────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1.5rem 6rem;
+  gap: 2rem;
+  text-align: center;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .4rem 1.2rem;
+  border: 1px solid rgba(0,200,150,.35);
+  background: rgba(0,200,150,.07);
+  font-family: var(--f-body);
+  font-size: .6rem;
+  letter-spacing: 4px;
+  color: var(--green);
+  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+}
+
+.hero-badge::before {
+  content: '◉';
+  animation: blink 1.5s ease-in-out infinite;
+  color: var(--green);
+}
+
+@keyframes blink {
+  0%,100% { opacity: 1; }
+  50%     { opacity: .2; }
+}
+
+.hero-title {
+  font-family: var(--f-head);
+  font-size: clamp(3rem, 12vw, 7rem);
+  letter-spacing: 6px;
+  line-height: .9;
+  color: var(--ivory);
+  text-shadow: -3px 0 rgba(200,0,30,.7), 3px 0 rgba(0,200,150,.25);
+}
+
+.hero-title span { color: var(--orange); }
+
+.hero-subtitle {
+  font-size: clamp(1rem, 3vw, 1.4rem);
+  color: rgba(245,240,232,.5);
+  letter-spacing: 2px;
+  font-weight: 400;
+}
+
+/* ── VALUE DISPLAY ─────────────────────────────────────────── */
+.value-display {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.value-card {
+  text-align: center;
+}
+
+.value-label {
+  font-family: var(--f-body);
+  font-size: .55rem;
+  letter-spacing: 4px;
+  color: rgba(245,240,232,.3);
+  margin-bottom: .4rem;
+}
+
+.value-amount {
+  font-family: var(--f-head);
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  line-height: 1;
+  letter-spacing: 3px;
+}
+
+.value-amount.start  { color: var(--amber); text-shadow: 3px 0 rgba(200,0,30,.5); }
+.value-amount.target { color: var(--green); text-shadow: 0 0 20px rgba(0,200,150,.4); }
+
+.value-arrow {
+  font-size: 2rem;
+  color: rgba(255,107,0,.4);
+  animation: arrowPulse 2s ease-in-out infinite;
+}
+@keyframes arrowPulse {
+  0%,100% { transform: translateX(0); opacity: .4; }
+  50%     { transform: translateX(-8px); opacity: .8; }
+}
+
+.pct-badge {
+  display: inline-block;
+  padding: .3rem .8rem;
+  background: rgba(0,200,150,.12);
+  border: 1px solid rgba(0,200,150,.4);
+  font-family: var(--f-head);
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  color: var(--green);
+  margin-top: .4rem;
+}
+
+/* ── SECTION WRAPPER ─────────────────────────────────────── */
+.section-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 840px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.section-eyebrow {
+  font-family: var(--f-body);
+  font-size: .65rem;
+  letter-spacing: 5px;
+  color: rgba(255,107,0,.5);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* ── DONUT CHART ─────────────────────────────────────────── */
+.chart-section {
+  position: relative;
+  z-index: 1;
+  padding: 4rem 1.5rem;
+}
+
+.chart-container {
+  display: flex;
+  gap: 4rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 840px;
+  margin: 0 auto;
+}
+
+.donut-wrap {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  flex-shrink: 0;
+}
+
+.donut-wrap svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+
+.donut-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.donut-center-amount {
+  font-family: var(--f-head);
+  font-size: 2.2rem;
+  letter-spacing: 2px;
+  color: var(--ivory);
+  line-height: 1;
+}
+
+.donut-center-label {
+  font-family: var(--f-body);
+  font-size: .5rem;
+  letter-spacing: 3px;
+  color: rgba(245,240,232,.3);
+  margin-top: .3rem;
+}
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: .85rem;
+  min-width: 200px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  cursor: default;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-info { flex: 1; }
+
+.legend-name {
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--ivory);
+  line-height: 1.2;
+}
+
+.legend-ticker {
+  font-family: var(--f-body);
+  font-size: .6rem;
+  letter-spacing: 2px;
+  color: rgba(245,240,232,.35);
+}
+
+.legend-pct {
+  font-family: var(--f-head);
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  color: rgba(245,240,232,.6);
+}
+
+/* ── ALLOCATION TABLE ────────────────────────────────────── */
+.alloc-section {
+  position: relative;
+  z-index: 1;
+  padding: 3rem 1.5rem;
+}
+
+.alloc-table {
+  width: 100%;
+  max-width: 840px;
+  margin: 0 auto;
+  border-collapse: separate;
+  border-spacing: 0 .5rem;
+}
+
+.alloc-table thead th {
+  font-family: var(--f-body);
+  font-size: .55rem;
+  letter-spacing: 4px;
+  color: rgba(245,240,232,.3);
+  padding: 0 1rem .75rem;
+  text-align: right;
+  border-bottom: 1px solid rgba(255,107,0,.12);
+}
+
+.alloc-table tbody tr {
+  background: rgba(255,107,0,.05);
+  border: 1px solid rgba(255,107,0,.12);
+  transition: background var(--trans);
+}
+
+.alloc-table tbody tr:hover {
+  background: rgba(255,107,0,.1);
+}
+
+.alloc-table td {
+  padding: 1rem;
+  vertical-align: middle;
+}
+
+.alloc-table td:first-child {
+  border-right: 3px solid transparent;
+  border-radius: 0;
+}
+
+.alloc-table tr:nth-child(1) td:first-child { border-right-color: var(--orange); }
+.alloc-table tr:nth-child(2) td:first-child { border-right-color: var(--amber); }
+.alloc-table tr:nth-child(3) td:first-child { border-right-color: var(--red); }
+.alloc-table tr:nth-child(4) td:first-child { border-right-color: var(--green); }
+.alloc-table tr:nth-child(5) td:first-child { border-right-color: var(--gold); }
+
+.asset-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ivory);
+}
+
+.asset-desc {
+  font-size: .8rem;
+  color: rgba(245,240,232,.45);
+  margin-top: .15rem;
+}
+
+.ticker-tag {
+  font-family: var(--f-body);
+  font-size: .6rem;
+  letter-spacing: 2px;
+  padding: .2rem .5rem;
+  background: rgba(255,107,0,.1);
+  border: 1px solid rgba(255,107,0,.25);
+  color: var(--amber);
+}
+
+.alloc-pct {
+  font-family: var(--f-head);
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+  color: var(--amber);
+}
+
+.alloc-amount {
+  font-family: var(--f-head);
+  font-size: 1.2rem;
+  color: var(--ivory);
+}
+
+.bar-cell { width: 120px; }
+
+.mini-bar-track {
+  height: 3px;
+  background: rgba(255,255,255,.06);
+  position: relative;
+  overflow: hidden;
+}
+
+.mini-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--red), var(--orange), var(--amber));
+  transform-origin: right;
+  animation: barGrow .8s ease-out forwards;
+}
+
+@keyframes barGrow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+.risk-chip {
+  font-family: var(--f-body);
+  font-size: .55rem;
+  letter-spacing: 2px;
+  padding: .2rem .5rem;
+  border-radius: 0;
+}
+
+.risk-low    { background: rgba(0,200,150,.1); border: 1px solid rgba(0,200,150,.3); color: var(--green); }
+.risk-med    { background: rgba(255,154,60,.1); border: 1px solid rgba(255,154,60,.3); color: var(--amber); }
+.risk-high   { background: rgba(200,0,30,.1);   border: 1px solid rgba(200,0,30,.3);  color: #ff4d6d; }
+
+/* ── PROJECTION PANEL ────────────────────────────────────── */
+.proj-section {
+  position: relative;
+  z-index: 1;
+  padding: 3rem 1.5rem;
+}
+
+.proj-panel {
+  max-width: 840px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+  background: rgba(0,200,150,.06);
+  border: 1px solid rgba(0,200,150,.25);
+  clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
+  position: relative;
+}
+
+.proj-panel::before {
+  content: '';
+  position: absolute;
+  top: 6px; left: 6px;
+  width: 14px; height: 14px;
+  border-top: 2px solid var(--green);
+  border-left: 2px solid var(--green);
+}
+
+.proj-panel::after {
+  content: '';
+  position: absolute;
+  bottom: 6px; right: 6px;
+  width: 14px; height: 14px;
+  border-bottom: 2px solid var(--green);
+  border-right: 2px solid var(--green);
+}
+
+.proj-title {
+  font-family: var(--f-head);
+  font-size: 1.5rem;
+  letter-spacing: 4px;
+  color: var(--green);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.proj-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.proj-card {
+  text-align: center;
+  padding: 1.2rem;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.07);
+}
+
+.proj-month {
+  font-family: var(--f-body);
+  font-size: .55rem;
+  letter-spacing: 4px;
+  color: rgba(245,240,232,.3);
+  margin-bottom: .5rem;
+}
+
+.proj-value {
+  font-family: var(--f-head);
+  font-size: 1.8rem;
+  letter-spacing: 2px;
+  line-height: 1;
+}
+
+.proj-change {
+  font-size: .75rem;
+  margin-top: .3rem;
+  font-weight: 600;
+}
+
+.proj-card:nth-child(1) .proj-value { color: var(--amber); }
+.proj-card:nth-child(2) .proj-value { color: #7dd3c0; }
+.proj-card:nth-child(3) .proj-value { color: var(--green); }
+.proj-card:nth-child(1) .proj-change { color: var(--amber); }
+.proj-card:nth-child(2) .proj-change { color: #7dd3c0; }
+.proj-card:nth-child(3) .proj-change { color: var(--green); }
+
+/* ── STRATEGY CHIPS ──────────────────────────────────────── */
+.strategy-section {
+  position: relative;
+  z-index: 1;
+  padding: 3rem 1.5rem;
+}
+
+.strategy-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .8rem;
+  max-width: 840px;
+  margin: 0 auto;
+}
+
+.strategy-chip {
+  position: relative;
+  padding: 1.2rem 1rem;
+  background: rgba(255,107,0,.06);
+  border: 1px solid rgba(255,107,0,.2);
+  clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  text-align: center;
+  transition: background var(--trans);
+  cursor: default;
+}
+
+.strategy-chip:hover { background: rgba(255,107,0,.12); }
+
+.strategy-chip::before {
+  content: '';
+  position: absolute;
+  top: 4px; right: 5px;
+  width: 7px; height: 7px;
+  border-top: 1.5px solid rgba(200,0,30,.6);
+  border-right: 1.5px solid rgba(200,0,30,.6);
+}
+
+.strategy-chip::after {
+  content: '';
+  position: absolute;
+  bottom: 4px; left: 5px;
+  width: 7px; height: 7px;
+  border-bottom: 1.5px solid rgba(200,0,30,.6);
+  border-left: 1.5px solid rgba(200,0,30,.6);
+}
+
+.chip-icon { font-size: 1.4rem; margin-bottom: .4rem; display: block; }
+
+.chip-label {
+  font-family: var(--f-head);
+  font-size: .85rem;
+  letter-spacing: 2px;
+  color: var(--amber);
+  display: block;
+}
+
+.chip-desc {
+  font-size: .75rem;
+  color: rgba(245,240,232,.4);
+  margin-top: .2rem;
+  line-height: 1.4;
+}
+
+/* ── BROKER SECTION ──────────────────────────────────────── */
+.broker-section {
+  position: relative;
+  z-index: 1;
+  padding: 3rem 1.5rem;
+}
+
+.broker-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: .7rem;
+  max-width: 840px;
+  margin: 0 auto;
+}
+
+.broker-card {
+  padding: 1rem;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  text-align: center;
+  transition: border-color var(--trans), background var(--trans);
+  cursor: default;
+}
+
+.broker-card:hover {
+  background: rgba(255,255,255,.07);
+  border-color: rgba(255,107,0,.3);
+}
+
+.broker-name {
+  font-family: var(--f-head);
+  font-size: 1rem;
+  letter-spacing: 2px;
+  color: var(--ivory);
+  margin-bottom: .3rem;
+}
+
+.broker-feature {
+  font-size: .7rem;
+  color: rgba(245,240,232,.35);
+  line-height: 1.3;
+}
+
+/* ── DISCLAIMER ──────────────────────────────────────────── */
+.disclaimer-section {
+  position: relative;
+  z-index: 1;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.disclaimer-box {
+  max-width: 840px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: rgba(200,0,30,.05);
+  border: 1px solid rgba(200,0,30,.2);
+  border-right: 3px solid var(--red);
+}
+
+.disclaimer-title {
+  font-family: var(--f-body);
+  font-size: .6rem;
+  letter-spacing: 4px;
+  color: var(--red);
+  margin-bottom: .75rem;
+}
+
+.disclaimer-text {
+  font-size: .8rem;
+  color: rgba(245,240,232,.4);
+  line-height: 1.7;
+}
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+.site-footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid rgba(255,107,0,.12);
+  padding: 1.75rem 1.5rem;
+  text-align: center;
+  font-family: var(--f-body);
+  font-size: .6rem;
+  letter-spacing: 3px;
+  color: rgba(245,240,232,.2);
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 700px) {
+  .proj-grid      { grid-template-columns: 1fr; }
+  .strategy-grid  { grid-template-columns: 1fr 1fr; }
+  .broker-grid    { grid-template-columns: 1fr 1fr; }
+  .value-display  { gap: 1.5rem; }
+  .alloc-table thead { display: none; }
+  .alloc-table td { display: block; padding: .5rem 1rem; }
+  .bar-cell { display: none !important; }
+  .chart-container { flex-direction: column; }
+}
+
+@media (max-width: 440px) {
+  .strategy-grid  { grid-template-columns: 1fr; }
+  .broker-grid    { grid-template-columns: 1fr 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scanlines       { animation: none; }
+  .hero-badge::before { animation: none; }
+  .value-arrow     { animation: none; }
+  .mini-bar-fill   { animation: none; }
+  .progress-tip    { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="scanlines" aria-hidden="true"></div>
+
+<!-- HERO -->
+<section class="hero" aria-label="תיק השקעות - כותרת ראשית">
+
+  <div class="hero-badge" aria-label="סטטוס: פעיל">
+    אסטרטגיית צמיחה // 3 חודשים
+  </div>
+
+  <h1 class="hero-title">תיק<span> $330</span></h1>
+
+  <p class="hero-subtitle">פיזור חכם · צמיחה ממוקדת · סיכון מנוהל</p>
+
+  <!-- START → TARGET -->
+  <div class="value-display" aria-label="יעד תיק ההשקעות">
+    <div class="value-card">
+      <p class="value-label">// השקעה התחלתית //</p>
+      <p class="value-amount start">$330</p>
+    </div>
+
+    <div class="value-arrow" aria-hidden="true">←</div>
+
+    <div class="value-card">
+      <p class="value-label">// יעד ל-3 חודשים //</p>
+      <p class="value-amount target" id="targetCounter">$379.50</p>
+      <p class="pct-badge">+15%</p>
+    </div>
+  </div>
+
+</section>
+
+<hr class="divider">
+
+<!-- DONUT CHART -->
+<section class="chart-section" aria-label="גרף הקצאת נכסים">
+  <div class="section-inner">
+    <p class="section-eyebrow">// הקצאת הנכסים //</p>
+  </div>
+
+  <div class="chart-container">
+
+    <!-- SVG Donut -->
+    <div class="donut-wrap" aria-hidden="true">
+      <svg viewBox="0 0 200 200">
+        <!-- r=80, circumference=502.65 -->
+        <!-- US Stocks 40% = 201.06 -->
+        <circle cx="100" cy="100" r="80" fill="none"
+          stroke="#FF6B00" stroke-width="28"
+          stroke-dasharray="201.06 301.59"
+          stroke-dashoffset="0"/>
+        <!-- Tech 25% = 125.66, offset=-(201.06) -->
+        <circle cx="100" cy="100" r="80" fill="none"
+          stroke="#FF9A3C" stroke-width="28"
+          stroke-dasharray="125.66 376.99"
+          stroke-dashoffset="-201.06"/>
+        <!-- International 15% = 75.40, offset=-(326.72) -->
+        <circle cx="100" cy="100" r="80" fill="none"
+          stroke="#C8001E" stroke-width="28"
+          stroke-dasharray="75.40 427.25"
+          stroke-dashoffset="-326.72"/>
+        <!-- REIT 10% = 50.27, offset=-(402.12) -->
+        <circle cx="100" cy="100" r="80" fill="none"
+          stroke="#00C896" stroke-width="28"
+          stroke-dasharray="50.27 452.38"
+          stroke-dashoffset="-402.12"/>
+        <!-- Gold 10% = 50.27, offset=-(452.39) -->
+        <circle cx="100" cy="100" r="80" fill="none"
+          stroke="#FFD700" stroke-width="28"
+          stroke-dasharray="50.26 452.39"
+          stroke-dashoffset="-452.39"/>
+        <!-- inner circle -->
+        <circle cx="100" cy="100" r="64" fill="#0a0a0a"/>
+      </svg>
+
+      <div class="donut-center">
+        <span class="donut-center-amount">$330</span>
+        <span class="donut-center-label">// סה"כ //</span>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="legend" aria-label="מקרא הגרף">
+      <div class="legend-item">
+        <span class="legend-dot" style="background:#FF6B00"></span>
+        <div class="legend-info">
+          <div class="legend-name">מניות ארה"ב כלל שוק</div>
+          <div class="legend-ticker">VTI</div>
+        </div>
+        <span class="legend-pct">40%</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot" style="background:#FF9A3C"></span>
+        <div class="legend-info">
+          <div class="legend-name">מניות טכנולוגיה</div>
+          <div class="legend-ticker">QQQ</div>
+        </div>
+        <span class="legend-pct">25%</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot" style="background:#C8001E"></span>
+        <div class="legend-info">
+          <div class="legend-name">שווקים בינלאומיים</div>
+          <div class="legend-ticker">VXUS</div>
+        </div>
+        <span class="legend-pct">15%</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot" style="background:#00C896"></span>
+        <div class="legend-info">
+          <div class="legend-name">נדל"ן (REIT)</div>
+          <div class="legend-ticker">VNQ</div>
+        </div>
+        <span class="legend-pct">10%</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot" style="background:#FFD700"></span>
+        <div class="legend-info">
+          <div class="legend-name">זהב</div>
+          <div class="legend-ticker">GLD</div>
+        </div>
+        <span class="legend-pct">10%</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ALLOCATION TABLE -->
+<section class="alloc-section" aria-label="טבלת הקצאת נכסים מפורטת">
+  <div class="section-inner">
+    <p class="section-eyebrow">// פירוט ההשקעות //</p>
+  </div>
+
+  <table class="alloc-table" aria-label="טבלת נכסים">
+    <thead>
+      <tr>
+        <th>נכס</th>
+        <th>סימול</th>
+        <th>%</th>
+        <th>סכום ($)</th>
+        <th>משקל</th>
+        <th>סיכון</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr>
+        <td>
+          <div class="asset-name">מניות ארה"ב - כלל שוק</div>
+          <div class="asset-desc">Vanguard Total Stock Market ETF — עוקב אחר ~4,000 מניות אמריקאיות</div>
+        </td>
+        <td><span class="ticker-tag">VTI</span></td>
+        <td><span class="alloc-pct">40%</span></td>
+        <td><span class="alloc-amount">$132.00</span></td>
+        <td class="bar-cell">
+          <div class="mini-bar-track">
+            <div class="mini-bar-fill" style="width:40%"></div>
+          </div>
+        </td>
+        <td><span class="risk-chip risk-med">בינוני</span></td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="asset-name">מניות טכנולוגיה</div>
+          <div class="asset-desc">Invesco QQQ Trust — מניות הנאסד"ק 100 הגדולות</div>
+        </td>
+        <td><span class="ticker-tag">QQQ</span></td>
+        <td><span class="alloc-pct">25%</span></td>
+        <td><span class="alloc-amount">$82.50</span></td>
+        <td class="bar-cell">
+          <div class="mini-bar-track">
+            <div class="mini-bar-fill" style="width:25%"></div>
+          </div>
+        </td>
+        <td><span class="risk-chip risk-high">גבוה</span></td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="asset-name">שווקים בינלאומיים</div>
+          <div class="asset-desc">Vanguard Total International Stock ETF — חשיפה לשאר העולם</div>
+        </td>
+        <td><span class="ticker-tag">VXUS</span></td>
+        <td><span class="alloc-pct">15%</span></td>
+        <td><span class="alloc-amount">$49.50</span></td>
+        <td class="bar-cell">
+          <div class="mini-bar-track">
+            <div class="mini-bar-fill" style="width:15%"></div>
+          </div>
+        </td>
+        <td><span class="risk-chip risk-med">בינוני</span></td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="asset-name">נדל"ן (REIT)</div>
+          <div class="asset-desc">Vanguard Real Estate ETF — קרנות נדל"ן מניבות</div>
+        </td>
+        <td><span class="ticker-tag">VNQ</span></td>
+        <td><span class="alloc-pct">10%</span></td>
+        <td><span class="alloc-amount">$33.00</span></td>
+        <td class="bar-cell">
+          <div class="mini-bar-track">
+            <div class="mini-bar-fill" style="width:10%"></div>
+          </div>
+        </td>
+        <td><span class="risk-chip risk-med">בינוני</span></td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="asset-name">זהב</div>
+          <div class="asset-desc">SPDR Gold Shares ETF — גידור בפני אינפלציה ואי-ודאות</div>
+        </td>
+        <td><span class="ticker-tag">GLD</span></td>
+        <td><span class="alloc-pct">10%</span></td>
+        <td><span class="alloc-amount">$33.00</span></td>
+        <td class="bar-cell">
+          <div class="mini-bar-track">
+            <div class="mini-bar-fill" style="width:10%"></div>
+          </div>
+        </td>
+        <td><span class="risk-chip risk-low">נמוך</span></td>
+      </tr>
+
+    </tbody>
+  </table>
+</section>
+
+<hr class="divider">
+
+<!-- PROJECTION PANEL -->
+<section class="proj-section" aria-label="תחזית צמיחה חודשית">
+  <div class="section-inner">
+    <p class="section-eyebrow">// תחזית צמיחה חודשית //</p>
+  </div>
+
+  <div class="proj-panel">
+    <h2 class="proj-title">מפת דרכים לגדילה</h2>
+
+    <div class="proj-grid">
+      <div class="proj-card" aria-label="חודש 1">
+        <p class="proj-month">// חודש 1 //</p>
+        <p class="proj-value">$346.50</p>
+        <p class="proj-change">+$16.50 (+5%)</p>
+      </div>
+      <div class="proj-card" aria-label="חודש 2">
+        <p class="proj-month">// חודש 2 //</p>
+        <p class="proj-value">$363.30</p>
+        <p class="proj-change">+$33.30 (+10%)</p>
+      </div>
+      <div class="proj-card" aria-label="חודש 3">
+        <p class="proj-month">// חודש 3 //</p>
+        <p class="proj-value">$379.50</p>
+        <p class="proj-change">+$49.50 (+15%)</p>
+      </div>
+    </div>
+
+    <p style="text-align:center;font-size:.7rem;color:rgba(245,240,232,.25);font-family:var(--f-body);letter-spacing:2px;">
+      * תחזית אופטימיסטית — לא ערובה לתשואה
+    </p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- STRATEGY CHIPS -->
+<section class="strategy-section" aria-label="עקרונות אסטרטגיית ההשקעה">
+  <div class="section-inner">
+    <p class="section-eyebrow">// עקרונות האסטרטגיה //</p>
+  </div>
+
+  <div class="strategy-grid">
+    <div class="strategy-chip">
+      <span class="chip-icon">📊</span>
+      <span class="chip-label">פיזור נכסים</span>
+      <span class="chip-desc">5 נכסים שונים להפחתת סיכון</span>
+    </div>
+    <div class="strategy-chip">
+      <span class="chip-icon">🔄</span>
+      <span class="chip-label">איזון חודשי</span>
+      <span class="chip-desc">בדיקת הקצאות פעם בחודש</span>
+    </div>
+    <div class="strategy-chip">
+      <span class="chip-icon">📈</span>
+      <span class="chip-label">ETF בלבד</span>
+      <span class="chip-desc">קרנות סל — עלויות נמוכות</span>
+    </div>
+    <div class="strategy-chip">
+      <span class="chip-icon">🛡️</span>
+      <span class="chip-label">גידור בזהב</span>
+      <span class="chip-desc">10% הגנה מאינפלציה</span>
+    </div>
+    <div class="strategy-chip">
+      <span class="chip-icon">🌍</span>
+      <span class="chip-label">חשיפה גלובלית</span>
+      <span class="chip-desc">ארה"ב + שוק בינלאומי</span>
+    </div>
+    <div class="strategy-chip">
+      <span class="chip-icon">⚡</span>
+      <span class="chip-label">טכנולוגיה</span>
+      <span class="chip-desc">25% בנאסד"ק לצמיחה</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- BROKERS -->
+<section class="broker-section" aria-label="ברוקרים מומלצים">
+  <div class="section-inner">
+    <p class="section-eyebrow">// ברוקרים מומלצים לרכישה //</p>
+  </div>
+
+  <div class="broker-grid">
+    <div class="broker-card">
+      <p class="broker-name">ROBINHOOD</p>
+      <p class="broker-feature">עמלה $0 · מניות חלקיות · ממשק פשוט</p>
+    </div>
+    <div class="broker-card">
+      <p class="broker-name">FIDELITY</p>
+      <p class="broker-feature">עמלה $0 · מוסמך · מניות חלקיות</p>
+    </div>
+    <div class="broker-card">
+      <p class="broker-name">WEBULL</p>
+      <p class="broker-feature">עמלה $0 · כלי ניתוח מתקדמים</p>
+    </div>
+    <div class="broker-card">
+      <p class="broker-name">SCHWAB</p>
+      <p class="broker-feature">עמלה $0 · אמין · שירות לקוחות</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- DISCLAIMER -->
+<section class="disclaimer-section" aria-label="כתב ויתור">
+  <div class="disclaimer-box" role="note">
+    <p class="disclaimer-title">// אזהרת סיכון — חובה לקרוא //</p>
+    <p class="disclaimer-text">
+      דף זה מוצג למטרות חינוכיות ואינפורמטיביות בלבד ואינו מהווה ייעוץ השקעות, המלצה פיננסית, או הבטחת תשואה. ביצועי עבר אינם ערובה לביצועים עתידיים. כל השקעה בשוק ההון כרוכה בסיכון הפסד, כולל אובדן מלוא ההון המושקע. לפני כל החלטת השקעה, מומלץ להתייעץ עם יועץ פיננסי מורשה. הנתונים המוצגים הינם תחזיות בלבד ואינם מבוססים על ניתוח פרטני.
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <p>תיק השקעות // 2025 // נבנה על ידי AI — לא ייעוץ פיננסי</p>
+</footer>
+
+<script>
+/* ── ANIMATED COUNTER ───────────────────────────────────── */
+(function() {
+  const el = document.getElementById('targetCounter');
+  const end = 379.50;
+  const start = 330;
+  const dur = 2000;
+  const startTime = performance.now();
+
+  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+
+  function step(now) {
+    const t = Math.min(1, (now - startTime) / dur);
+    const v = start + (end - start) * easeOut(t);
+    el.textContent = '$' + v.toFixed(2);
+    if (t < 1) requestAnimationFrame(step);
+  }
+
+  requestAnimationFrame(step);
+})();
+</script>
+
+</body>
+</html>
